@@ -11,6 +11,14 @@ services:
       dockerfile: Dockerfile
     container_name: game-service
 
+  gateway-service:
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+
   mafia-db:
     image: postgres:18
     container_name: mafia-db
