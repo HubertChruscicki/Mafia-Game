@@ -1,0 +1,58 @@
+services:
+  auth-service:
+    environment:
+      - SERVER_PORT=8081
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://mafia-db:5432/mafia
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_RABBITMQ_HOST=mafia-rabbitmq
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+    volumes:
+      - ./auth-service/logs:/app/logs
+    restart: unless-stopped
+    depends_on:
+      - mafia-db
+      - mafia-rabbitmq
+
+  game-service:
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://mafia-db:5432/mafia
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_RABBITMQ_HOST=mafia-rabbitmq
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - AUTH_SERVICE_URL=http://auth-service:8081
+    volumes:
+      - ./game-service/logs:/app/logs
+    restart: unless-stopped
+    depends_on:
+      - auth-service
+      - mafia-db
+      - mafia-rabbitmq
+
+  mafia-db:
+    environment:
+      - POSTGRES_DB=mafia
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  mafia-rabbitmq:
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  rabbitmq_data:

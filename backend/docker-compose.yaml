@@ -1,0 +1,20 @@
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth-service
+
+  game-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: game-service
+
+  mafia-db:
+    image: postgres:18
+    container_name: mafia-db
+
+  mafia-rabbitmq:
+    image: rabbitmq:4.1-management
+    container_name: mafia-rabbitmq
