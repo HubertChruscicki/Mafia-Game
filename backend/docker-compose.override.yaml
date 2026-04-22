@@ -7,12 +7,15 @@ services:
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_RABBITMQ_HOST=mafia-rabbitmq
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
     volumes:
       - ./auth-service/logs:/app/logs
     restart: unless-stopped
     depends_on:
       - mafia-db
       - mafia-rabbitmq
+    ports:
+      - "8081:8081"
 
   game-service:
     environment:
@@ -23,6 +26,7 @@ services:
       - SPRING_RABBITMQ_HOST=mafia-rabbitmq
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
       - AUTH_SERVICE_URL=http://auth-service:8081
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
     volumes:
       - ./game-service/logs:/app/logs
     restart: unless-stopped
@@ -30,10 +34,14 @@ services:
       - auth-service
       - mafia-db
       - mafia-rabbitmq
+    ports:
+      - "8082:8082"
 
   gateway-service:
     environment:
       - SERVER_PORT=8080
+      - "CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}"
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
     restart: unless-stopped
     depends_on:
       - auth-service
