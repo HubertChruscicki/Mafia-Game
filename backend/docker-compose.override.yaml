@@ -16,7 +16,7 @@ services:
 
   game-service:
     environment:
-      - SERVER_PORT=8080
+      - SERVER_PORT=8082
       - SPRING_DATASOURCE_URL=jdbc:postgresql://mafia-db:5432/mafia
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
@@ -30,6 +30,14 @@ services:
       - auth-service
       - mafia-db
       - mafia-rabbitmq
+
+  gateway-service:
+    environment:
+      - SERVER_PORT=8080
+    restart: unless-stopped
+    depends_on:
+      - auth-service
+      - game-service
 
   mafia-db:
     environment:
