@@ -1,13 +1,13 @@
 services:
   auth-service:
     build:
-      context: .
+      context: ./auth-service
       dockerfile: Dockerfile
     container_name: auth-service
 
   game-service:
     build:
-      context: .
+      context: ./game-service
       dockerfile: Dockerfile
     container_name: game-service
 
