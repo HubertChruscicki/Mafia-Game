@@ -3,7 +3,6 @@ build
 coverage
 .git
 .gitignore
-Dockerfile
 docker-compose.yaml
 docker-compose.override.yaml
 npm-debug.log
