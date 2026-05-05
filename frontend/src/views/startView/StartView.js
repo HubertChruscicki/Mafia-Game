@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './StartView.css';
 
 function StartView() {
@@ -11,6 +12,14 @@ function StartView() {
         <p className="start-view__meta">
           Szkielet aplikacji gotowy. Kolejne widoki zostana dodane w nastepnych commitach.
         </p>
+        <div className="start-view__actions">
+          <Link className="start-view__button start-view__button--primary" to="/login">
+            Zaloguj sie
+          </Link>
+          <Link className="start-view__button start-view__button--secondary" to="/register">
+            Rejestracja
+          </Link>
+        </div>
       </section>
     </main>
   );
