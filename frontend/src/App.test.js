@@ -2,17 +2,22 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 
-test('renders main layout with start screen', () => {
+beforeEach(() => {
+  localStorage.clear();
+  window.history.pushState({}, '', '/');
+});
+
+test('renders start screen on public root route', () => {
   render(<App />);
   const titleElement = screen.getByRole('heading', { name: /eMafia/i });
-  const navElement = screen.getByRole('navigation', { name: /main navigation/i });
-  const footerElement = screen.getByRole('contentinfo');
   expect(titleElement).toBeInTheDocument();
-  expect(navElement).toBeInTheDocument();
-  expect(footerElement).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /zaloguj sie/i })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /rejestracja/i })).toBeInTheDocument();
 });
 
 test('toggles mobile menu links in header', async () => {
+  localStorage.setItem('token', 'test-token');
+  window.history.pushState({}, '', '/dashboard');
   render(<App />);
 
   const menuButton = screen.getByRole('button', { name: /open menu/i });
@@ -20,6 +25,19 @@ test('toggles mobile menu links in header', async () => {
   const mobileNav = screen.getByRole('navigation', { name: /mobile navigation/i });
   expect(mobileNav).toBeInTheDocument();
 
-  await userEvent.click(within(mobileNav).getByRole('link', { name: /dashboard/i }));
+  await userEvent.click(within(mobileNav).getByRole('link', { name: /profile/i }));
   expect(screen.queryByRole('navigation', { name: /mobile navigation/i })).not.toBeInTheDocument();
+});
+
+test('redirects unauthenticated user from private route to login', () => {
+  window.history.pushState({}, '', '/dashboard');
+  render(<App />);
+  expect(screen.getByRole('heading', { name: /logowanie/i })).toBeInTheDocument();
+});
+
+test('redirects authenticated user from login to dashboard', () => {
+  localStorage.setItem('token', 'test-token');
+  window.history.pushState({}, '', '/login');
+  render(<App />);
+  expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
 });
