@@ -1,0 +1,35 @@
+.start-view {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.start-view__card {
+  width: min(640px, 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 24px 64px rgba(2, 6, 23, 0.35);
+}
+
+.start-view__title {
+  margin: 0;
+  font-size: 2.5rem;
+  line-height: 1.1;
+}
+
+.start-view__subtitle {
+  margin-top: 1rem;
+  font-size: 1.05rem;
+  color: #cbd5e1;
+}
+
+.start-view__meta {
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
