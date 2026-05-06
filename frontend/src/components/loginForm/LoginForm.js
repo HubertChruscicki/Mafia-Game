@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuthSession from '../../hooks/useAuthSession';
 import { loginUser } from '../../services/authApi';
+import { getEmailError, getPasswordError } from '../../utils/validators';
 import FormInput from '../formInput/FormInput';
 import FormMessage from '../formMessage/FormMessage';
 import './LoginForm.css';
@@ -23,8 +24,15 @@ function LoginForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!formData.email.trim() || !formData.password.trim()) {
-      setError('Uzupelnij email i haslo.');
+    const emailError = getEmailError(formData.email);
+    if (emailError) {
+      setError(emailError);
+      return;
+    }
+
+    const passwordError = getPasswordError(formData.password);
+    if (passwordError) {
+      setError(passwordError);
       return;
     }
 
