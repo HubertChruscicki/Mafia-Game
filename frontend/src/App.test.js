@@ -52,7 +52,7 @@ test('allows navigating from register to login with success message', async () =
   await userEvent.type(screen.getByLabelText(/powtorz haslo/i), 'Secret123!');
   await userEvent.click(screen.getByRole('button', { name: /utworz konto/i }));
 
-  expect(screen.getByRole('heading', { name: /logowanie/i })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: /logowanie/i })).toBeInTheDocument();
   expect(screen.getByText(/konto utworzone/i)).toBeInTheDocument();
 });
 
@@ -64,5 +64,14 @@ test('logs in and redirects to dashboard', async () => {
   await userEvent.type(screen.getByLabelText(/^haslo$/i), 'Secret123!');
   await userEvent.click(screen.getByRole('button', { name: /zaloguj/i }));
 
-  expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
+});
+
+test('logs out from header and returns to login', async () => {
+  localStorage.setItem('token', 'test-token');
+  window.history.pushState({}, '', '/dashboard');
+  render(<App />);
+
+  await userEvent.click(screen.getByRole('button', { name: /logout/i }));
+  expect(screen.getByRole('heading', { name: /logowanie/i })).toBeInTheDocument();
 });

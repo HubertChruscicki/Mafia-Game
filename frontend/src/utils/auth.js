@@ -1,3 +1,5 @@
+import { isTokenPresent } from '../services/authStorage';
+
 export function isAuthenticated() {
-  return Boolean(localStorage.getItem('token'));
+  return isTokenPresent();
 }
