@@ -41,3 +41,28 @@ test('redirects authenticated user from login to dashboard', () => {
   render(<App />);
   expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
 });
+
+test('allows navigating from register to login with success message', async () => {
+  window.history.pushState({}, '', '/register');
+  render(<App />);
+
+  await userEvent.type(screen.getByLabelText(/nazwa uzytkownika/i), 'player1');
+  await userEvent.type(screen.getByLabelText(/^email$/i), 'player@example.com');
+  await userEvent.type(screen.getByLabelText(/^haslo$/i), 'Secret123!');
+  await userEvent.type(screen.getByLabelText(/powtorz haslo/i), 'Secret123!');
+  await userEvent.click(screen.getByRole('button', { name: /utworz konto/i }));
+
+  expect(screen.getByRole('heading', { name: /logowanie/i })).toBeInTheDocument();
+  expect(screen.getByText(/konto utworzone/i)).toBeInTheDocument();
+});
+
+test('logs in and redirects to dashboard', async () => {
+  window.history.pushState({}, '', '/login');
+  render(<App />);
+
+  await userEvent.type(screen.getByLabelText(/^email$/i), 'player@example.com');
+  await userEvent.type(screen.getByLabelText(/^haslo$/i), 'Secret123!');
+  await userEvent.click(screen.getByRole('button', { name: /zaloguj/i }));
+
+  expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
+});
