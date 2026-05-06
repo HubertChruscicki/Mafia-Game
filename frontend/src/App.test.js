@@ -75,3 +75,14 @@ test('logs out from header and returns to login', async () => {
   await userEvent.click(screen.getByRole('button', { name: /logout/i }));
   expect(screen.getByRole('heading', { name: /logowanie/i })).toBeInTheDocument();
 });
+
+test('shows validation message for invalid login email', async () => {
+  window.history.pushState({}, '', '/login');
+  render(<App />);
+
+  await userEvent.type(screen.getByLabelText(/^email$/i), 'wrong-email');
+  await userEvent.type(screen.getByLabelText(/^haslo$/i), 'Secret123!');
+  await userEvent.click(screen.getByRole('button', { name: /zaloguj/i }));
+
+  expect(screen.getByText(/podaj poprawny adres email/i)).toBeInTheDocument();
+});

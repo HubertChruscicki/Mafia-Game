@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/authApi';
+import {
+  getEmailError,
+  getPasswordError,
+  getUsernameError,
+} from '../../utils/validators';
 import FormInput from '../formInput/FormInput';
 import FormMessage from '../formMessage/FormMessage';
 import './RegisterForm.css';
@@ -24,8 +29,21 @@ function RegisterForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!formData.username.trim() || !formData.email.trim() || !formData.password.trim()) {
-      setError('Uzupelnij wszystkie pola formularza.');
+    const usernameError = getUsernameError(formData.username);
+    if (usernameError) {
+      setError(usernameError);
+      return;
+    }
+
+    const emailError = getEmailError(formData.email);
+    if (emailError) {
+      setError(emailError);
+      return;
+    }
+
+    const passwordError = getPasswordError(formData.password);
+    if (passwordError) {
+      setError(passwordError);
       return;
     }
 
