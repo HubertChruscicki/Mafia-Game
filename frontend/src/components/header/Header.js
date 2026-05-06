@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Header.css';
-import { isAuthenticated } from '../../utils/auth';
+import useAuthSession from '../../hooks/useAuthSession';
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const authenticated = isAuthenticated();
+  const navigate = useNavigate();
+  const { authenticated, removeSession } = useAuthSession();
 
   const links = useMemo(
     () =>
@@ -30,6 +31,12 @@ function Header() {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    removeSession();
+    closeMenu();
+    navigate('/login');
   };
 
   if (location.pathname === '/') {
@@ -58,6 +65,11 @@ function Header() {
               {link.label}
             </Link>
           ))}
+          {authenticated && (
+            <button className="header__link header__link-button" type="button" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
         </nav>
       </div>
       {isMenuOpen && (
@@ -67,6 +79,11 @@ function Header() {
               {link.label}
             </Link>
           ))}
+          {authenticated && (
+            <button className="header__mobile-link header__mobile-link-button" type="button" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
         </nav>
       )}
     </header>

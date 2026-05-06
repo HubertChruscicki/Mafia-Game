@@ -51,6 +51,12 @@
   font-size: 0.95rem;
 }
 
+.header__link-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
 .header__link:hover {
   color: #cc0404;
   background: #f8fafc;
@@ -78,6 +84,14 @@
 .header__mobile-link:hover {
   color: #cc0404;
   background: #f8fafc;
+}
+
+.header__mobile-link-button {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {

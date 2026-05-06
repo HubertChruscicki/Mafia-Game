@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { registerUser } from '../../services/authApi';
 import FormInput from '../formInput/FormInput';
 import FormMessage from '../formMessage/FormMessage';
 import './RegisterForm.css';
@@ -12,6 +13,7 @@ function RegisterForm() {
     confirmPassword: '',
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (event) => {
@@ -19,7 +21,7 @@ function RegisterForm() {
     setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!formData.username.trim() || !formData.email.trim() || !formData.password.trim()) {
@@ -32,9 +34,22 @@ function RegisterForm() {
       return;
     }
 
-    navigate('/login', {
-      state: { message: 'Konto utworzone. Zaloguj sie, aby kontynuowac.' },
-    });
+    setLoading(true);
+    setError('');
+    try {
+      await registerUser({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
+      navigate('/login', {
+        state: { message: 'Konto utworzone. Zaloguj sie, aby kontynuowac.' },
+      });
+    } catch (submitError) {
+      setError(submitError.message || 'Rejestracja nie powiodla sie.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,6 +63,7 @@ function RegisterForm() {
           placeholder="Podaj nick"
           value={formData.username}
           onChange={handleChange}
+          disabled={loading}
           required
         />
         <FormInput
@@ -57,6 +73,7 @@ function RegisterForm() {
           placeholder="twoj@email.com"
           value={formData.email}
           onChange={handleChange}
+          disabled={loading}
           required
         />
         <FormInput
@@ -66,6 +83,7 @@ function RegisterForm() {
           placeholder="Wpisz haslo"
           value={formData.password}
           onChange={handleChange}
+          disabled={loading}
           required
         />
         <FormInput
@@ -75,10 +93,11 @@ function RegisterForm() {
           placeholder="Wpisz haslo ponownie"
           value={formData.confirmPassword}
           onChange={handleChange}
+          disabled={loading}
           required
         />
-        <button className="register-form__button" type="submit">
-          Utworz konto
+        <button className="register-form__button" type="submit" disabled={loading}>
+          {loading ? 'Tworzenie konta...' : 'Utworz konto'}
         </button>
       </form>
       <p className="register-form__switch">
