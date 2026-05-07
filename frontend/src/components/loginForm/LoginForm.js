@@ -53,39 +53,41 @@ function LoginForm() {
   return (
     <section className="auth-form">
       <h1 className="auth-form__title">Logowanie</h1>
-      <FormMessage type="success" message={successMessage} />
-      <FormMessage type="error" message={error} />
-      <form onSubmit={handleSubmit}>
-        <FormInput
-          label="Email"
-          type="email"
-          name="email"
-          placeholder="twoj@email.com"
-          value={formData.email}
-          onChange={handleChange}
-          disabled={loading}
-          required
-        />
-        <FormInput
-          label="Haslo"
-          type="password"
-          name="password"
-          placeholder="Wpisz haslo"
-          value={formData.password}
-          onChange={handleChange}
-          disabled={loading}
-          required
-        />
-        <button className="auth-form__button" type="submit" disabled={loading}>
-          {loading ? 'Logowanie...' : 'Zaloguj'}
-        </button>
-      </form>
-      <p className="auth-form__switch">
-        Nie masz konta?{' '}
-        <Link to="/register" className="auth-form__link">
-          Zarejestruj sie
-        </Link>
-      </p>
+      <div className="auth-form__inner">
+        <FormMessage type="success" message={successMessage} />
+        <FormMessage type="error" message={error} />
+        <form onSubmit={handleSubmit}>
+          <FormInput
+            label="Email"
+            type="email"
+            name="email"
+            placeholder="twoj@email.com"
+            value={formData.email}
+            onChange={handleChange}
+            disabled={loading}
+            required
+          />
+          <FormInput
+            label="Haslo"
+            type="password"
+            name="password"
+            placeholder="Wpisz haslo"
+            value={formData.password}
+            onChange={handleChange}
+            disabled={loading}
+            required
+          />
+          <button className="auth-form__button" type="submit" disabled={loading}>
+            {loading ? 'Logowanie...' : 'Zaloguj'}
+          </button>
+        </form>
+        <p className="auth-form__switch">
+          Nie masz konta?{' '}
+          <Link to="/register" className="auth-form__link">
+            Zarejestruj sie
+          </Link>
+        </p>
+      </div>
     </section>
   );
 }
