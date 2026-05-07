@@ -1,0 +1,108 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 140px);
+  padding: 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+}
+
+.profile__title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.profile__forms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 550px;
+}
+
+.profile__section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+}
+
+.profile__section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333333;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  text-align: left;
+}
+
+.profile__field {
+  position: relative;
+  width: 100%;
+  padding: 0 0 5px 0;
+  margin-bottom: 1.5rem;
+}
+
+.profile__field::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #9c9797;
+}
+
+.profile__field:focus-within::after {
+  background-color: #000000;
+}
+
+.profile__field input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 10px 5px 7px 5px;
+  font-size: 16px;
+  font-family: 'DM Sans', sans-serif;
+  color: #000000;
+}
+
+.profile__field input:focus {
+  outline: none;
+}
+
+.profile__field input::placeholder {
+  font-family: 'DM Sans', sans-serif;
+  color: #9c9797;
+}
+
+.profile__submit {
+  display: flex;
+  width: 100%;
+  max-width: 250px;
+  padding: 10px 20px;
+  margin-top: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #cc0404;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.2s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.profile__submit:hover {
+  opacity: 0.8;
+}
