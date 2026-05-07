@@ -39,7 +39,7 @@ test('redirects authenticated user from login to dashboard', () => {
   localStorage.setItem('token', 'test-token');
   window.history.pushState({}, '', '/login');
   render(<App />);
-  expect(screen.getByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /your games/i })).toBeInTheDocument();
 });
 
 test('allows navigating from register to login with success message', async () => {
@@ -64,7 +64,7 @@ test('logs in and redirects to dashboard', async () => {
   await userEvent.type(screen.getByLabelText(/^haslo$/i), 'Secret123!');
   await userEvent.click(screen.getByRole('button', { name: /zaloguj/i }));
 
-  expect(await screen.findByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { name: /your games/i })).toBeInTheDocument();
 });
 
 test('logs out from header and returns to login', async () => {
