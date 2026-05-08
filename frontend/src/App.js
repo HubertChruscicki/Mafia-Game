@@ -6,6 +6,8 @@ import MainLayout from './layouts/mainLayout/MainLayout';
 import CreateGameRoomView from './views/createGameRoomView/CreateGameRoomView';
 import DashboardView from './views/dashboardView/DashboardView';
 import EnterRoomCodeView from './views/enterRoomCodeView/EnterRoomCodeView';
+import GameRoomView from './views/gameRoomView/GameRoomView';
+import JoinGameRoomView from './views/joinGameRoomView/JoinGameRoomView';
 import LoginView from './views/loginView/LoginView';
 import ProfileView from './views/profileView/ProfileView';
 import RegisterView from './views/registerView/RegisterView';
@@ -69,6 +71,26 @@ function App() {
               <PrivateRoute>
                 <MainLayout>
                   <EnterRoomCodeView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/join/:roomCode"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <JoinGameRoomView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/game-room/:roomCode"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <GameRoomView />
                 </MainLayout>
               </PrivateRoute>
             }
