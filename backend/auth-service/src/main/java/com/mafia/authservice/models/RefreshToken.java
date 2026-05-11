@@ -1,4 +1,5 @@
-import com.mafia.authservice.models.User;
+package com.mafia.authservice.models;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
