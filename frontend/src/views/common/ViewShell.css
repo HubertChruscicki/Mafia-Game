@@ -1,0 +1,28 @@
+.view-shell {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.view-shell__card {
+  width: min(500px, 100%);
+  padding: 2rem;
+  text-align: center;
+}
+
+.view-shell__title {
+  margin: 0;
+  font-size: 2rem;
+  color: #000000;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+}
+
+.view-shell__description {
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  color: #333333;
+  font-family: 'DM Sans', sans-serif;
+}

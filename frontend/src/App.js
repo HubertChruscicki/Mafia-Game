@@ -1,23 +1,103 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import PrivateRoute from './components/routing/PrivateRoute';
+import PublicRoute from './components/routing/PublicRoute';
+import MainLayout from './layouts/mainLayout/MainLayout';
+import CreateGameRoomView from './views/createGameRoomView/CreateGameRoomView';
+import DashboardView from './views/dashboardView/DashboardView';
+import EnterRoomCodeView from './views/enterRoomCodeView/EnterRoomCodeView';
+import GameRoomView from './views/gameRoomView/GameRoomView';
+import JoinGameRoomView from './views/joinGameRoomView/JoinGameRoomView';
+import LoginView from './views/loginView/LoginView';
+import ProfileView from './views/profileView/ProfileView';
+import RegisterView from './views/registerView/RegisterView';
+import StartView from './views/startView/StartView';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<StartView />} />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginView />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <RegisterView />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <DashboardView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <ProfileView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/create-room"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <CreateGameRoomView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/enter-code"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <EnterRoomCodeView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/join/:roomCode"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <JoinGameRoomView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/game-room/:roomCode"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <GameRoomView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
