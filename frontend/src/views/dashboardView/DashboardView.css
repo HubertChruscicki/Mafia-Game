@@ -1,0 +1,126 @@
+.dashboard {
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: calc(100vh - 140px);
+  font-family: 'DM Sans', sans-serif;
+  padding: 1.5rem;
+}
+
+.dashboard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.dashboard__new-game {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  background-color: #279302;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 15px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.dashboard__new-game:hover {
+  background-color: #006305;
+}
+
+.dashboard__search {
+  flex: 1;
+  max-width: 400px;
+}
+
+.dashboard__search-input {
+  width: 100%;
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 15px;
+  font-size: 0.95rem;
+  font-family: 'DM Sans', sans-serif;
+  color: #000000;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+.dashboard__search-input:focus {
+  outline: none;
+  border-color: #333333;
+}
+
+.dashboard__search-input::placeholder {
+  color: #9c9797;
+}
+
+.dashboard__section-title {
+  font-size: 1.8rem;
+  color: #333333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #eeeeee;
+  padding-bottom: 10px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.dashboard__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  border: 2px dashed #dddddd;
+  min-height: 300px;
+}
+
+.dashboard__empty-message {
+  font-size: 1.3rem;
+  color: #666666;
+  margin: 0 0 15px 0;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+
+.dashboard__empty-subtext {
+  font-size: 1rem;
+  color: #999999;
+  margin: 0;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+}
+
+@media (max-width: 600px) {
+  .dashboard__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard__new-game {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .dashboard__search {
+    max-width: 100%;
+  }
+
+  .dashboard__empty {
+    padding: 40px 15px;
+    min-height: 250px;
+  }
+
+  .dashboard__empty-message {
+    font-size: 1.1rem;
+  }
+
+  .dashboard__empty-subtext {
+    font-size: 0.9rem;
+  }
+}
