@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuthSession from '../../hooks/useAuthSession';
-import { loginUser } from '../../services/authApi';
+import { fetchCurrentUser, loginUser } from '../../services/authApi';
 import { getEmailError, getPasswordError } from '../../utils/validators';
 import FormInput from '../formInput/FormInput';
 import FormMessage from '../formMessage/FormMessage';
@@ -13,7 +13,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { storeSession } = useAuthSession();
+  const { storeSession, storeUser } = useAuthSession();
   const successMessage = location.state?.message || '';
 
   const handleChange = (event) => {
@@ -42,6 +42,14 @@ function LoginForm() {
     try {
       const session = await loginUser(formData);
       storeSession(session);
+      try {
+        const currentUser = await fetchCurrentUser();
+        if (currentUser) {
+          storeUser(currentUser);
+        }
+      } catch (userError) {
+        // ignore: header will just fall back to anonymous label
+      }
       navigate('/dashboard');
     } catch (submitError) {
       setError(submitError.message || 'Logowanie nie powiodlo sie.');
