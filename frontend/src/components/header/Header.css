@@ -77,6 +77,24 @@
   font-weight: 500;
 }
 
+.header__user {
+  color: #555555;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+.header__mobile-user {
+  color: #555555;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
 .header__mobile-nav {
   position: absolute;
   top: 70px;
