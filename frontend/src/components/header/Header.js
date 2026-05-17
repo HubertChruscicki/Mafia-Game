@@ -7,7 +7,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { authenticated, removeSession } = useAuthSession();
+  const { authenticated, removeSession, user } = useAuthSession();
 
   const links = useMemo(
     () =>
@@ -33,9 +33,9 @@ function Header() {
     setIsMenuOpen(false);
   };
 
-  const handleLogout = () => {
-    removeSession();
+  const handleLogout = async () => {
     closeMenu();
+    await removeSession();
     navigate('/login');
   };
 
@@ -65,6 +65,9 @@ function Header() {
               {link.label}
             </Link>
           ))}
+          {authenticated && user?.username && (
+            <span className="header__user" aria-label="Current user">{user.username}</span>
+          )}
           {authenticated && (
             <button className="header__link header__link-button" type="button" onClick={handleLogout}>
               Logout
@@ -74,6 +77,9 @@ function Header() {
       </div>
       {isMenuOpen && (
         <nav id="mobile-navigation" className="header__mobile-nav" aria-label="Mobile navigation">
+          {authenticated && user?.username && (
+            <span className="header__mobile-user" aria-label="Current user">{user.username}</span>
+          )}
           {links.map((link) => (
             <Link key={link.to} className="header__mobile-link" to={link.to} onClick={closeMenu}>
               {link.label}
