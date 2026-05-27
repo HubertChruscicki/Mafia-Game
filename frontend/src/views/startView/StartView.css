@@ -1,61 +1,104 @@
 .start-view {
+  position: relative;
   min-height: calc(100vh - 140px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem;
+  overflow: hidden;
+}
+
+.start-view__bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(204, 4, 4, 0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .start-view__card {
-  width: min(500px, 100%);
-  padding: 2rem;
+  position: relative;
+  width: min(520px, 100%);
+  padding: 3rem 2rem;
   text-align: center;
 }
 
-.start-view__title {
-  margin: 0;
-  font-size: 3rem;
-  line-height: 1.1;
+.start-view__logo {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
   color: #cc0404;
   font-family: 'DM Sans', sans-serif;
-  font-weight: 700;
+  margin-bottom: 1.25rem;
 }
 
-.start-view__subtitle {
-  margin-top: 1rem;
-  font-size: 1.05rem;
-  color: #333333;
+.start-view__headline {
+  margin: 0 0 1rem;
+  font-size: 1.45rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #1a1a1a;
   font-family: 'DM Sans', sans-serif;
 }
 
-.start-view__meta {
-  margin-top: 1.5rem;
-  margin-bottom: 0;
-  font-size: 0.9rem;
-  color: #9c9797;
+.start-view__description {
+  margin: 0 auto 2.25rem;
+  max-width: 400px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555555;
   font-family: 'DM Sans', sans-serif;
 }
 
 .start-view__actions {
-  margin-top: 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: center;
+  margin-bottom: 1.5rem;
 }
 
 .start-view__button {
   text-decoration: none;
   border-radius: 15px;
-  padding: 12px 28px;
-  font-weight: 500;
+  padding: 13px 32px;
+  font-weight: 600;
   font-size: 16px;
   font-family: 'DM Sans', sans-serif;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.15s ease;
 }
 
 .start-view__button:hover {
-  opacity: 0.8;
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.start-view__button--primary {
+  background-color: #cc0404;
+  color: #ffffff;
+}
+
+.start-view__button--secondary {
+  background-color: transparent;
+  color: #cc0404;
+  border: 2px solid #cc0404;
+}
+
+.start-view__hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #9c9797;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.start-view__link {
+  color: #cc0404;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.start-view__link:hover {
+  text-decoration: underline;
 }
 
 .start-view__button--primary {

@@ -5,8 +5,6 @@ import {
   updateAccessToken,
 } from './authStorage';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
 async function parseResponse(response, fallbackMessage) {
   const payload = await response.json().catch(() => ({}));
 
@@ -18,47 +16,32 @@ async function parseResponse(response, fallbackMessage) {
 }
 
 export async function loginUser(credentials) {
-  if (!API_BASE_URL) {
-    return {
-      token: 'dev-auth-token',
-      refreshToken: 'dev-refresh-token',
-      expiresIn: 3600,
-    };
-  }
-
-  const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+  const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(credentials),
   });
 
-  return parseResponse(response, 'Nie udalo sie zalogowac.');
+  return parseResponse(response, 'Nie udało się zalogować.');
 }
 
 export async function registerUser(registrationData) {
-  if (!API_BASE_URL) {
-    return { ok: true };
-  }
-
-  const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+  const response = await fetch('/api/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(registrationData),
   });
 
-  return parseResponse(response, 'Nie udalo sie utworzyc konta.');
+  return parseResponse(response, 'Nie udało się utworzyć konta.');
 }
 
 export async function refreshAccessToken() {
-  if (!API_BASE_URL) {
-    return null;
-  }
   const refreshToken = getRefreshToken();
   if (!refreshToken) {
     return null;
   }
 
-  const response = await fetch(`${API_BASE_URL}/api/auth/refresh`, {
+  const response = await fetch('/api/auth/refresh', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ refreshToken }),
@@ -82,14 +65,10 @@ export async function refreshAccessToken() {
 }
 
 export async function logoutUser() {
-  if (!API_BASE_URL) {
-    clearSession();
-    return;
-  }
   const refreshToken = getRefreshToken();
   if (refreshToken) {
     try {
-      await fetch(`${API_BASE_URL}/api/auth/logout`, {
+      await fetch('/api/auth/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken }),
@@ -128,10 +107,7 @@ export async function apiFetch(input, init = {}) {
 }
 
 export async function fetchCurrentUser() {
-  if (!API_BASE_URL) {
-    return null;
-  }
-  const response = await apiFetch(`${API_BASE_URL}/api/users/me`);
+  const response = await apiFetch('/api/users/me');
   if (!response.ok) {
     return null;
   }

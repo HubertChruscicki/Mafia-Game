@@ -24,14 +24,18 @@
   background-color: #000000;
 }
 
-.form-input__label {
+.form-input__icon {
   margin-bottom: 0;
+  padding-bottom: 0;
   height: 25px;
   display: flex;
   align-items: center;
-  font-size: 0.85rem;
   color: #9c9797;
-  white-space: nowrap;
+  cursor: pointer;
+}
+
+.form-input:focus-within .form-input__icon {
+  color: #000000;
 }
 
 .form-input__control {
@@ -54,6 +58,10 @@
   color: #9c9797;
 }
 
-.form-input__control:focus::placeholder {
-  color: #000000;
+.form-input__control:-webkit-autofill,
+.form-input__control:-webkit-autofill:hover,
+.form-input__control:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #000000;
 }
