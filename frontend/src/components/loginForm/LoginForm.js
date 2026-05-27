@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { MdEmail, MdLock } from 'react-icons/md';
 import useAuthSession from '../../hooks/useAuthSession';
 import { fetchCurrentUser, loginUser } from '../../services/authApi';
 import { getEmailError, getPasswordError } from '../../utils/validators';
@@ -66,20 +67,20 @@ function LoginForm() {
         <FormMessage type="error" message={error} />
         <form onSubmit={handleSubmit}>
           <FormInput
-            label="Email"
+            label={<MdEmail size={22} />}
             type="email"
             name="email"
-            placeholder="twoj@email.com"
+            placeholder="Twój email"
             value={formData.email}
             onChange={handleChange}
             disabled={loading}
             required
           />
           <FormInput
-            label="Haslo"
+            label={<MdLock size={22} />}
             type="password"
             name="password"
-            placeholder="Wpisz haslo"
+            placeholder="Hasło"
             value={formData.password}
             onChange={handleChange}
             disabled={loading}
