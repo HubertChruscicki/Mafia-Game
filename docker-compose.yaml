@@ -80,6 +80,7 @@ services:
       - SPRING_RABBITMQ_HOST=mafia-rabbitmq
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
       - AUTH_SERVICE_URL=http://auth-service:8081
+      - SPRING_TASK_SCHEDULING_ENABLED=true
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
     volumes:
       - ./backend/game-service/logs:/app/logs

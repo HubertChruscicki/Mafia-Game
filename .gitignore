@@ -6,3 +6,8 @@
 Thumbs.db
 .classpath
 .project
+.tmp
+
+target/
+**/target/
+
