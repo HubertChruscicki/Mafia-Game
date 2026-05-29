@@ -15,6 +15,7 @@ import com.mafia.gameservice.services.VotingResult;
 import com.mafia.gameservice.statemachine.game.GamePhaseEvent;
 import com.mafia.gameservice.statemachine.game.GamePhaseState;
 import com.mafia.gameservice.statemachine.game.GamePhaseStateMachine;
+import com.mafia.gameservice.services.VotingSessionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -48,6 +49,7 @@ public class GameOrchestrator {
     private final GamePlayerRepository gamePlayerRepository;
     private final SimpMessagingTemplate messagingTemplate;
     private final GameEventPublisher eventPublisher;
+    private final VotingSessionService votingSessionService;
 
     // Używamy @Lazy aby uniknąć circular dependency
     public GameOrchestrator(
@@ -56,13 +58,15 @@ public class GameOrchestrator {
             GameRoomRepository gameRoomRepository,
             GamePlayerRepository gamePlayerRepository,
             SimpMessagingTemplate messagingTemplate,
-            GameEventPublisher eventPublisher) {
+            GameEventPublisher eventPublisher,
+            @Lazy VotingSessionService votingSessionService) {
         this.phaseStateMachine = phaseStateMachine;
         this.gameRepository = gameRepository;
         this.gameRoomRepository = gameRoomRepository;
         this.gamePlayerRepository = gamePlayerRepository;
         this.messagingTemplate = messagingTemplate;
         this.eventPublisher = eventPublisher;
+        this.votingSessionService = votingSessionService;
     }
 
     /**
@@ -104,7 +108,7 @@ public class GameOrchestrator {
     @Transactional
     public void handleVotingExpired(VotingSession session) {
         log.info("=== VOTING EXPIRED === Session: {}", session.getId());
-        //TODO WYGASIC SESJE (SERIWS DO GLOSOWANIA)
+        votingSessionService.expireSession(session);
     }
 
     /**
@@ -151,7 +155,7 @@ public class GameOrchestrator {
 
         log.info("Starting voting session: phase={}, discussionTime={}s", gamePhase, discussionTime);
 
-        //TODO START SESJI
+        votingSessionService.startVotingSession(game, gamePhase);
     }
 
     /**
@@ -192,6 +196,7 @@ public class GameOrchestrator {
 
         game.setStatus(GameStatus.FINISHED);
         game.setEndedAt(LocalDateTime.now());
+        game.setWinnerTeam(winResult.getWinner());
         gameRepository.save(game);
 
         // Pobierz graczy dla zdarzenia
