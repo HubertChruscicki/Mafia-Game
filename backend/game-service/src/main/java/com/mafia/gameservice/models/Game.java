@@ -53,6 +53,9 @@ public class Game {
     @Column(name = "ended_at")
     private LocalDateTime endedAt;
 
+    @Column(name = "winner_team")
+    private String winnerTeam;
+
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GamePlayer> players = new HashSet<>();
 

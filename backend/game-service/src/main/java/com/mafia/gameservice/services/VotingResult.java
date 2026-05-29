@@ -54,4 +54,26 @@ public class VotingResult {
             case NO_ELIMINATION -> "No elimination - no votes or all abstained";
         };
     }
+
+    public boolean hasElimination() {
+        return eliminatedUser != null;
+    }
+
+    // ==================== FACTORY METHODS ====================
+
+    public static VotingResult elimination(User eliminated, List<VoteResult> topVoted) {
+        return new VotingResult(eliminated, false, topVoted, ResultType.ELIMINATION);
+    }
+
+    public static VotingResult tie(List<VoteResult> topVoted) {
+        return new VotingResult(null, true, topVoted, ResultType.TIE_NO_ELIMINATION);
+    }
+
+    public static VotingResult tieRandomElimination(User eliminated, List<VoteResult> topVoted) {
+        return new VotingResult(eliminated, true, topVoted, ResultType.TIE_RANDOM_ELIMINATION);
+    }
+
+    public static VotingResult noElimination() {
+        return new VotingResult(null, false, List.of(), ResultType.NO_ELIMINATION);
+    }
 }

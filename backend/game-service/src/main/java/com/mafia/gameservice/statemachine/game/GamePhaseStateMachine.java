@@ -100,7 +100,9 @@ public class GamePhaseStateMachine extends AbstractStateMachine<GamePhaseState, 
     public GamePhaseState mapFromGamePhase(GamePhase phase) {
         return switch (phase) {
             case NIGHT_VOTE -> GamePhaseState.NIGHT_VOTING;
+            case NIGHT_RESULT -> GamePhaseState.NIGHT_RESULT;
             case DAY_VOTE -> GamePhaseState.DAY_VOTING;
+            case DAY_RESULT -> GamePhaseState.DAY_RESULT;
             case DAY_DISCUSSION -> GamePhaseState.DAY_VOTING; // Traktujemy dyskusję jako część głosowania
             case GAME_OVER -> GamePhaseState.GAME_OVER;
         };
@@ -111,8 +113,10 @@ public class GamePhaseStateMachine extends AbstractStateMachine<GamePhaseState, 
      */
     public GamePhase mapToGamePhase(GamePhaseState state) {
         return switch (state) {
-            case NIGHT_VOTING, NIGHT_RESULT -> GamePhase.NIGHT_VOTE;
-            case DAY_VOTING, DAY_RESULT -> GamePhase.DAY_VOTE;
+            case NIGHT_VOTING -> GamePhase.NIGHT_VOTE;
+            case NIGHT_RESULT -> GamePhase.NIGHT_RESULT;
+            case DAY_VOTING -> GamePhase.DAY_VOTE;
+            case DAY_RESULT -> GamePhase.DAY_RESULT;
             case GAME_OVER -> GamePhase.GAME_OVER;
         };
     }
