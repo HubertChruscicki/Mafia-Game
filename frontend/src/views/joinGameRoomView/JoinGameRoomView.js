@@ -17,7 +17,11 @@ function JoinGameRoomView() {
       setError('');
       try {
         const response = await apiFetch(`/api/game_rooms/${roomCode}`);
-        if (!response.ok) throw new Error('Nie znaleziono pokoju');
+        if (response.status === 404) throw new Error('Room not found');
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload.message || 'Failed to load room');
+        }
         const data = await response.json();
         setRoom(data);
       } catch (err) {
