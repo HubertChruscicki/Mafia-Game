@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../../services/authApi';
 import FormMessage from '../../components/formMessage/FormMessage';
 import './CreateGameRoomView.css';
 
@@ -16,25 +17,17 @@ function CreateGameRoomView() {
     setLoading(true);
 
     try {
-      const apiBase = process.env.REACT_APP_API_BASE_URL;
-      if (!apiBase) {
-        const mockCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-        navigate(`/game-room/${mockCode}`);
-        return;
-      }
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${apiBase}/api/game_rooms/create`, {
+      const response = await apiFetch('/api/game_rooms/create', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: roomName.trim(), maxPlayers: Number(maxPlayers) }),
       });
+
       if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text || 'Failed to create room.');
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.message || 'Failed to create room.');
       }
+
       const data = await response.json();
       navigate(`/game-room/${data.roomCode}`);
     } catch (err) {
