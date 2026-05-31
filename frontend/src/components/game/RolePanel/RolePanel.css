@@ -1,0 +1,103 @@
+.role-panel {
+  width: 100%;
+  max-width: 700px;
+  margin: 1rem auto 0;
+  padding: 0 1rem;
+}
+
+.role-panel__check-btn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #c0392b;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.role-panel__check-btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.role-panel__check-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.role-panel__error {
+  margin: 0.5rem 0 0;
+  color: #ff6b6b;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.role-panel__card {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  background: #1a1a1a;
+  border: 2px solid #c0392b;
+  border-radius: 10px;
+  text-align: center;
+  animation: role-panel-slide-down 0.3s ease;
+}
+
+@keyframes role-panel-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.role-panel__icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.role-panel__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.role-panel__name {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #c0392b;
+  letter-spacing: 0.05em;
+}
+
+.role-panel__dead {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.role-panel__hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #888;
+}
+
+@media (min-width: 768px) {
+  .role-panel__icon {
+    font-size: 4rem;
+  }
+
+  .role-panel__name {
+    font-size: 2rem;
+  }
+}
