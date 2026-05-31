@@ -1,0 +1,117 @@
+.day-voting-panel {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 1.5rem;
+  color: #e0e0e0;
+}
+
+.day-voting-panel__header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.day-voting-panel__icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.day-voting-panel__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f5c842;
+  margin: 0 0 0.25rem 0;
+}
+
+.day-voting-panel__subtitle {
+  color: #999;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.day-voting-panel__voted-notice {
+  text-align: center;
+  color: #4caf50;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.day-voting-panel__players {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.day-voting-panel__player {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #252525;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+}
+
+.day-voting-panel__player--me {
+  opacity: 0.5;
+}
+
+.day-voting-panel__player-name {
+  min-width: 120px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.day-voting-panel__vote-bar-wrap {
+  flex: 1;
+  background: #333;
+  border-radius: 4px;
+  height: 8px;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.day-voting-panel__vote-bar {
+  background: #f5c842;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+  min-width: 0;
+}
+
+.day-voting-panel__vote-count {
+  font-size: 0.8rem;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.day-voting-panel__vote-btn {
+  padding: 0.35rem 1rem;
+  border: 1px solid #f5c842;
+  background: transparent;
+  color: #f5c842;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.day-voting-panel__vote-btn:hover:not(:disabled) {
+  background: #f5c842;
+  color: #111;
+}
+
+.day-voting-panel__vote-btn--active {
+  background: #f5c842;
+  color: #111;
+}
+
+.day-voting-panel__vote-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

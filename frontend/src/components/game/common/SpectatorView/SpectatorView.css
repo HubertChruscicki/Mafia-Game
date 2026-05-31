@@ -1,0 +1,87 @@
+.spectator-view {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 1.5rem;
+  color: #888;
+  text-align: center;
+}
+
+.spectator-view--night {
+  background: #0e0e1a;
+  border-color: #2a1f3a;
+}
+
+.spectator-view__header {
+  margin-bottom: 1.25rem;
+}
+
+.spectator-view__ghost {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  opacity: 0.6;
+}
+
+.spectator-view__title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #aaa;
+  margin: 0 0 0.25rem 0;
+}
+
+.spectator-view__subtitle {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+}
+
+.spectator-view__stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin: 1rem 0;
+}
+
+.spectator-view__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spectator-view__stat-num {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ccc;
+}
+
+.spectator-view__stat-label {
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.spectator-view__players {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.spectator-view__player {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.75rem;
+  background: #222;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.spectator-view__player--dead {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
