@@ -1,0 +1,112 @@
+.elimination-dialog__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: elim-fadein 0.3s ease;
+}
+
+@keyframes elim-fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.elimination-dialog {
+  position: relative;
+  background: #1a1a1a;
+  border-radius: 14px;
+  padding: 2.5rem 2rem 2rem;
+  text-align: center;
+  min-width: 300px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+  animation: elim-scalein 0.3s ease;
+}
+
+@keyframes elim-scalein {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.elimination-dialog--night {
+  border: 2px solid #8b1a1a;
+}
+
+.elimination-dialog--day {
+  border: 2px solid #c8a000;
+}
+
+.elimination-dialog__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.elimination-dialog__close:hover { color: #ccc; }
+
+.elimination-dialog__icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.elimination-dialog__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin: 0 0 1rem 0;
+}
+
+.elimination-dialog__eliminated {
+  margin-bottom: 1.25rem;
+}
+
+.elimination-dialog__label {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.elimination-dialog__name {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #c0392b;
+  margin: 0;
+}
+
+.elimination-dialog__no-elim {
+  color: #888;
+  margin-bottom: 1.25rem;
+}
+
+.elimination-dialog__ok {
+  padding: 0.55rem 2rem;
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.elimination-dialog__ok:hover { background: #96281b; }
+
+.elimination-dialog__wait {
+  color: #666;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}

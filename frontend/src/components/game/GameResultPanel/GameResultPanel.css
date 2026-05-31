@@ -1,0 +1,139 @@
+.game-result-panel {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1rem 4rem;
+  color: #e0e0e0;
+  text-align: center;
+  background: #111;
+}
+
+.game-result-panel--mafia {
+  background: radial-gradient(ellipse at top, #3a0a0a 0%, #111 60%);
+}
+
+.game-result-panel--citizens {
+  background: radial-gradient(ellipse at top, #0a1f3a 0%, #111 60%);
+}
+
+.game-result-panel__header {
+  margin-bottom: 2rem;
+}
+
+.game-result-panel__trophy {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  animation: trophy-bounce 0.8s ease;
+}
+
+@keyframes trophy-bounce {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.game-result-panel__winner {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+}
+
+.game-result-panel--mafia .game-result-panel__winner { color: #c0392b; }
+.game-result-panel--citizens .game-result-panel__winner { color: #f5c842; }
+
+.game-result-panel__subtitle {
+  color: #888;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.game-result-panel__stats {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+}
+
+.game-result-panel__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-result-panel__stat-num {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.game-result-panel__stat-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.game-result-panel__teams {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game-result-panel__team {
+  flex: 1;
+  min-width: 240px;
+  background: #1a1a1a;
+  border-radius: 10px;
+  padding: 1.25rem;
+  text-align: left;
+}
+
+.game-result-panel__team h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.game-result-panel__team--mafia h3 { color: #c0392b; }
+.game-result-panel__team--citizens h3 { color: #4a90d9; }
+
+.game-result-panel__player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 0.9rem;
+}
+
+.game-result-panel__player:last-child { border-bottom: none; }
+
+.game-result-panel__player--dead {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.game-result-panel__actions {
+  margin-top: 1rem;
+}
+
+.game-result-panel__btn {
+  padding: 0.65rem 2.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.game-result-panel__btn--primary {
+  background: #c0392b;
+  color: #fff;
+}
+
+.game-result-panel__btn--primary:hover { opacity: 0.85; }
