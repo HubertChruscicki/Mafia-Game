@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Pattern dla logów -->
+    <property name="CONSOLE_LOG_PATTERN" 
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p --- [%15.15t] %-40.40logger{39} : %m%n"/>
+    <property name="FILE_LOG_PATTERN" 
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p --- [%t] %-40.40logger{39} : %m%n"/>
+
+    <!-- Appender dla konsoli (Docker logs) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- FULL_LOGS - WSZYSTKIE logi (Twoje + Spring + Hibernate + wszystko) -->
+    <appender name="FILE_FULL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/full_logs.log</file>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/full_logs.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- DEV_LOGS - TYLKO Twoje logi (com.mafia.*) - BEZ ŚMIECI! -->
+    <appender name="FILE_DEV" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/dev_logs.log</file>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/dev_logs.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- TWOJE LOGI - cały pakiet com.mafia.* -->
+    <!-- additivity="true" = logi idą też do root (full_logs) -->
+    <logger name="com.mafia" level="DEBUG" additivity="true">
+        <appender-ref ref="FILE_DEV"/>
+    </logger>
+
+    <!-- Wyłącz gadatliwe loggery w konsoli -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.hibernate" level="INFO"/>
+    <logger name="org.apache" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="org.postgresql" level="WARN"/>
+
+    <!-- Root logger - wszystko idzie do full_logs i konsoli -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_FULL"/>
+    </root>
+
+</configuration>
