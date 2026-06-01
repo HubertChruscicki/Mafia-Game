@@ -19,5 +19,13 @@ module.exports = function (app) {
 
   // Game-service routes
   app.use('/api', createProxyMiddleware(proxyOpts(GAME_SERVICE)));
-  app.use('/ws', createProxyMiddleware({ ...proxyOpts(GAME_SERVICE), ws: true }));
+  app.use('/ws', createProxyMiddleware({
+    target: GAME_SERVICE,
+    changeOrigin: true,
+    ws: true,
+    logLevel: 'warn',
+    onProxyReq: (proxyReq) => {
+      proxyReq.setHeader('Origin', GAME_SERVICE);
+    },
+  }));
 };
