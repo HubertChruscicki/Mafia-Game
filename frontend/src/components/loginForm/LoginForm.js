@@ -51,7 +51,7 @@ function LoginForm() {
       } catch (userError) {
         // ignore: header will just fall back to anonymous label
       }
-      navigate('/dashboard');
+      navigate(location.state?.from?.pathname || '/dashboard', { replace: true });
     } catch (submitError) {
       setError(submitError.message || 'Logowanie nie powiodlo sie.');
     } finally {
