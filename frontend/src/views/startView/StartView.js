@@ -20,7 +20,7 @@ function StartView() {
             Zarejestruj się
           </Link>
         </div>
-        <p className="start-view__hint">Dołączasz linkiem? <Link className="start-view__link" to="/join">Wpisz kod pokoju</Link></p>
+        <p className="start-view__hint">Dołączasz linkiem? <Link className="start-view__link" to="/enter-code">Wpisz kod pokoju</Link></p>
       </section>
     </main>
   );
