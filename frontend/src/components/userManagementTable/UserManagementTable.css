@@ -1,0 +1,80 @@
+.user-mgmt {
+  width: 100%;
+}
+
+.user-mgmt__loading {
+  color: #666666;
+}
+
+.user-mgmt__error {
+  color: #cc0404;
+  margin-bottom: 12px;
+}
+
+.user-mgmt__refresh {
+  margin-bottom: 16px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #1a6fcc;
+  color: #ffffff;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+.user-mgmt__refresh:hover:not(:disabled) {
+  background: #1558a8;
+}
+
+.user-mgmt__refresh:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.user-mgmt__table-wrap {
+  overflow-x: auto;
+}
+
+.user-mgmt__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+}
+
+.user-mgmt__table th,
+.user-mgmt__table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.user-mgmt__table th {
+  background: #f8f8f8;
+  font-weight: 600;
+}
+
+.user-mgmt__actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.user-mgmt__btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.user-mgmt__btn--toggle {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.user-mgmt__btn--delete {
+  background: #f8d7da;
+  color: #721c24;
+}

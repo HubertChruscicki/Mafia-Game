@@ -17,12 +17,13 @@ function Header() {
             { to: '/create-room', label: 'Create room' },
             { to: '/enter-code', label: 'Enter code' },
             { to: '/profile', label: 'Profile' },
+            ...(user?.admin ? [{ to: '/admin', label: 'Admin' }] : []),
           ]
         : [
             { to: '/login', label: 'Login' },
             { to: '/register', label: 'Register' },
           ],
-    [authenticated]
+    [authenticated, user?.admin]
   );
 
   const toggleMenu = () => {
