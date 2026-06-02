@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import FormMessage from '../../components/formMessage/FormMessage';
+import useAuthSession from '../../hooks/useAuthSession';
+import { apiFetch } from '../../services/authApi';
 import './ProfileView.css';
 
 function ProfileView() {
+  const { storeUser } = useAuthSession();
   const [usernameData, setUsernameData] = useState({ newUsername: '' });
   const [emailData, setEmailData] = useState({ newEmail: '' });
   const [passwordData, setPasswordData] = useState({
@@ -21,37 +24,25 @@ function ProfileView() {
     setError('');
   };
 
-  const handleSubmit = async (endpoint, data, successText) => {
+  const handleSubmit = async (path, data, successText, onSuccess) => {
     setMessage('');
     setError('');
     try {
-      const token = localStorage.getItem('token');
-      const apiBase = process.env.REACT_APP_API_BASE_URL;
-      if (!apiBase) {
-        setMessage(successText);
-        return;
-      }
-      const response = await fetch(`${apiBase}/api/users/profile/${endpoint}`, {
+      const response = await apiFetch(path, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
         setMessage(successText);
-        if (endpoint === 'username') setUsernameData({ newUsername: '' });
-        if (endpoint === 'email') setEmailData({ newEmail: '' });
-        if (endpoint === 'password')
-          setPasswordData({ oldPassword: '', newPassword: '' });
+        onSuccess?.(response);
       } else {
-        const errorText = await response.text();
-        setError(errorText || `Failed to update ${endpoint}`);
+        const payload = await response.json().catch(() => ({}));
+        setError(payload.message || `Failed to update profile`);
       }
     } catch (err) {
-      setError(`An error occurred while updating ${endpoint}.`);
+      setError(err.message || 'An error occurred while updating profile.');
     }
   };
 
@@ -67,7 +58,16 @@ function ProfileView() {
           className="profile__section"
           onSubmit={(event) => {
             event.preventDefault();
-            handleSubmit('username', usernameData, 'Username updated successfully!');
+            handleSubmit(
+              '/api/users/me/username',
+              usernameData,
+              'Username updated successfully!',
+              async (response) => {
+                const updated = await response.json();
+                if (updated) storeUser(updated);
+                setUsernameData({ newUsername: '' });
+              }
+            );
           }}
         >
           <h3 className="profile__section-title">Change Username</h3>
@@ -90,7 +90,16 @@ function ProfileView() {
           className="profile__section"
           onSubmit={(event) => {
             event.preventDefault();
-            handleSubmit('email', emailData, 'Email updated successfully!');
+            handleSubmit(
+              '/api/users/me/email',
+              emailData,
+              'Email updated successfully!',
+              async (response) => {
+                const updated = await response.json();
+                if (updated) storeUser(updated);
+                setEmailData({ newEmail: '' });
+              }
+            );
           }}
         >
           <h3 className="profile__section-title">Change Email</h3>
@@ -113,7 +122,12 @@ function ProfileView() {
           className="profile__section"
           onSubmit={(event) => {
             event.preventDefault();
-            handleSubmit('password', passwordData, 'Password updated successfully!');
+            handleSubmit(
+              '/api/users/me/password',
+              passwordData,
+              'Password updated successfully!',
+              () => setPasswordData({ oldPassword: '', newPassword: '' })
+            );
           }}
         >
           <h3 className="profile__section-title">Change Password</h3>
