@@ -3,10 +3,13 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import PrivateRoute from './components/routing/PrivateRoute';
 import PublicRoute from './components/routing/PublicRoute';
 import MainLayout from './layouts/mainLayout/MainLayout';
+import AdminRoute from './components/routing/AdminRoute';
+import AdminPanelView from './views/adminPanelView/AdminPanelView';
 import CreateGameRoomView from './views/createGameRoomView/CreateGameRoomView';
 import DashboardView from './views/dashboardView/DashboardView';
 import EnterRoomCodeView from './views/enterRoomCodeView/EnterRoomCodeView';
 import GameRoomView from './views/gameRoomView/GameRoomView';
+import GameView from './views/gameView/GameView';
 import JoinGameRoomView from './views/joinGameRoomView/JoinGameRoomView';
 import LoginView from './views/loginView/LoginView';
 import ProfileView from './views/profileView/ProfileView';
@@ -56,6 +59,16 @@ function App() {
             }
           />
           <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <MainLayout>
+                  <AdminPanelView />
+                </MainLayout>
+              </AdminRoute>
+            }
+          />
+          <Route
             path="/create-room"
             element={
               <PrivateRoute>
@@ -91,6 +104,16 @@ function App() {
               <PrivateRoute>
                 <MainLayout>
                   <GameRoomView />
+                </MainLayout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/game/:roomCode"
+            element={
+              <PrivateRoute>
+                <MainLayout>
+                  <GameView />
                 </MainLayout>
               </PrivateRoute>
             }
