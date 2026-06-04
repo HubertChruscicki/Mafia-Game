@@ -11,3 +11,5 @@ Thumbs.db
 target/
 **/target/
 
+hs_err_pid*.log
+
