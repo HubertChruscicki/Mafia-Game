@@ -11,5 +11,7 @@ Thumbs.db
 target/
 **/target/
 
+backend/game-service/logs/
+
 hs_err_pid*.log
 
