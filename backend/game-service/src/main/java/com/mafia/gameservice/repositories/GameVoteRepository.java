@@ -14,6 +14,8 @@ import java.util.UUID;
 @Repository
 public interface GameVoteRepository extends JpaRepository<GameVote, UUID> {
 
+    List<GameVote> findByVotingSession(VotingSession session);
+
     Optional<GameVote> findByVotingSessionAndVoterId(VotingSession session, UUID voterId);
 
     List<GameVote> findByVotingSessionAndIsValid(VotingSession session, boolean isValid);

@@ -17,6 +17,8 @@ import java.util.UUID;
 @Repository
 public interface VotingSessionRepository extends JpaRepository<VotingSession, UUID> {
 
+    List<VotingSession> findByGame(Game game);
+
     List<VotingSession> findByStatus(VotingStatus status);
 
     List<VotingSession> findByStatusAndEndsAtBefore(VotingStatus status, LocalDateTime dateTime);

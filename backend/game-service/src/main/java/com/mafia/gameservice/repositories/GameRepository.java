@@ -13,6 +13,8 @@ import java.util.UUID;
 @Repository
 public interface GameRepository extends JpaRepository<Game, UUID> {
 
+    List<Game> findByRoom(GameRoom room);
+
     List<Game> findByRoomAndStatus(GameRoom room, GameStatus status);
 
     List<Game> findByRoom_IdAndStatus(UUID roomId, GameStatus status);

@@ -14,9 +14,16 @@ import com.mafia.gameservice.enums.GameRoomStatus;
 import com.mafia.gameservice.models.GameRoom;
 import com.mafia.gameservice.models.PlayerInRoom;
 import com.mafia.gameservice.models.User;
+import com.mafia.gameservice.models.Game;
+import com.mafia.gameservice.models.GameVote;
+import com.mafia.gameservice.models.VotingSession;
+import com.mafia.gameservice.repositories.GamePlayerRepository;
+import com.mafia.gameservice.repositories.GameRepository;
 import com.mafia.gameservice.repositories.GameRoomRepository;
+import com.mafia.gameservice.repositories.GameVoteRepository;
 import com.mafia.gameservice.repositories.PlayerInRoomRepository;
 import com.mafia.gameservice.repositories.UserRepository;
+import com.mafia.gameservice.repositories.VotingSessionRepository;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +45,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class GameRoomService {
 
     private final GameRoomRepository gameRoomRepository;
+    private final GameRepository gameRepository;
+    private final GamePlayerRepository gamePlayerRepository;
+    private final VotingSessionRepository votingSessionRepository;
+    private final GameVoteRepository gameVoteRepository;
     private final UserRepository userRepository;
     private final PlayerInRoomRepository playerInRoomRepository;
     private final SimpMessagingTemplate messagingTemplate;
@@ -226,8 +237,9 @@ public class GameRoomService {
 
         boolean wasHost = gameRoom.getHost().getId().equals(currentUser.getId());
 
-        if (wasHost && gameRoom.getGameRoomStatus() == GameRoomStatus.OPEN) {
-            gameRoomRepository.delete(gameRoom);
+        if (wasHost && (gameRoom.getGameRoomStatus() == GameRoomStatus.OPEN
+                || gameRoom.getGameRoomStatus() == GameRoomStatus.GAME_IN_PROGRESS)) {
+            deleteRoomAsHost(gameRoom, players);
             messagingTemplate.convertAndSend(
                     "/topic/game/" + gameRoom.getRoomCode() + "/roomDeleted",
                     "Room " + gameRoom.getName() + " has been deleted by the host.");
@@ -262,6 +274,26 @@ public class GameRoomService {
         }
         log.warn("No filter provided in GameRoomInfoReq");
         return GameRoomListResp.of(List.of());
+    }
+
+    private void deleteRoomAsHost(GameRoom gameRoom, List<PlayerInRoom> players) {
+        List<Game> games = gameRepository.findByRoom(gameRoom);
+        for (Game game : games) {
+            deleteGameData(game);
+        }
+        playerInRoomRepository.deleteAll(players);
+        gameRoomRepository.delete(gameRoom);
+    }
+
+    private void deleteGameData(Game game) {
+        List<VotingSession> sessions = votingSessionRepository.findByGame(game);
+        for (VotingSession session : sessions) {
+            List<GameVote> votes = gameVoteRepository.findByVotingSession(session);
+            gameVoteRepository.deleteAll(votes);
+        }
+        votingSessionRepository.deleteAll(sessions);
+        gamePlayerRepository.deleteAll(gamePlayerRepository.findByGame(game));
+        gameRepository.delete(game);
     }
 
     @Transactional(readOnly = true)

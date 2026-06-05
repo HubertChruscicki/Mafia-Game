@@ -16,9 +16,13 @@ import com.mafia.gameservice.enums.GameRoomStatus;
 import com.mafia.gameservice.models.GameRoom;
 import com.mafia.gameservice.models.PlayerInRoom;
 import com.mafia.gameservice.models.User;
+import com.mafia.gameservice.repositories.GamePlayerRepository;
+import com.mafia.gameservice.repositories.GameRepository;
 import com.mafia.gameservice.repositories.GameRoomRepository;
+import com.mafia.gameservice.repositories.GameVoteRepository;
 import com.mafia.gameservice.repositories.PlayerInRoomRepository;
 import com.mafia.gameservice.repositories.UserRepository;
+import com.mafia.gameservice.repositories.VotingSessionRepository;
 import com.mafia.gameservice.support.GameTestFixtures;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,6 +43,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 class GameRoomServiceTest {
 
     @Mock private GameRoomRepository gameRoomRepository;
+    @Mock private GameRepository gameRepository;
+    @Mock private GamePlayerRepository gamePlayerRepository;
+    @Mock private VotingSessionRepository votingSessionRepository;
+    @Mock private GameVoteRepository gameVoteRepository;
     @Mock private UserRepository userRepository;
     @Mock private PlayerInRoomRepository playerInRoomRepository;
     @Mock private SimpMessagingTemplate messagingTemplate;
@@ -135,14 +143,17 @@ class GameRoomServiceTest {
     void leaveRoomAsHostDeletesRoom() {
         GameRoom room = GameTestFixtures.openRoom(host);
         PlayerInRoom membership = GameTestFixtures.playerInRoom(room, host);
+        List<PlayerInRoom> players = List.of(membership);
         when(userRepository.findById(host.getId())).thenReturn(Optional.of(host));
         when(gameRoomRepository.findByRoomCode("ABC123")).thenReturn(Optional.of(room));
-        when(playerInRoomRepository.findAllByGameRoom(room)).thenReturn(List.of(membership));
+        when(playerInRoomRepository.findAllByGameRoom(room)).thenReturn(players);
+        when(gameRepository.findByRoom(room)).thenReturn(List.of());
 
         var resp = gameRoomService.leaveRoom(new LeaveGameRoomReq("ABC123"));
 
         assertThat(resp.isSuccess()).isTrue();
         assertThat(resp.getMessage()).contains("deleted");
+        verify(playerInRoomRepository).deleteAll(players);
         verify(gameRoomRepository).delete(room);
         verify(messagingTemplate).convertAndSend(eq("/topic/game/ABC123/roomDeleted"), org.mockito.ArgumentMatchers.<Object>any());
     }
