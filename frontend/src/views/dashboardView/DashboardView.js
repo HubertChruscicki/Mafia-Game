@@ -85,7 +85,7 @@ function DashboardView() {
       });
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.message || 'Failed to end room');
+        throw new Error(data.error || data.message || 'Failed to end room');
       }
       if (user?.id) fetchRoomsByUserId(user.id);
       if (searchResults) {

@@ -120,7 +120,11 @@ function GameRoomView() {
     setLeaving(true);
     setError('');
     try {
-      await apiFetch(`/api/game_rooms/leave/${roomCode}`, { method: 'POST' });
+      const response = await apiFetch(`/api/game_rooms/leave/${roomCode}`, { method: 'POST' });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.error || payload.message || 'Failed to leave room');
+      }
       navigate('/dashboard');
     } catch (err) {
       setError(err.message || 'Failed to leave room');
@@ -128,7 +132,10 @@ function GameRoomView() {
     }
   };
 
-  const handleStartGame = async () => {
+  const handleStartGame = async (settings) => {
+    const mafiaCount = settings?.mafiaCount ?? gameSettings.mafiaCount;
+    const discussionTimeSeconds =
+      settings?.discussionTimeSeconds ?? gameSettings.discussionTimeSeconds;
     setStarting(true);
     setError('');
     try {
@@ -137,13 +144,13 @@ function GameRoomView() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           roomCode,
-          mafiaCount: gameSettings.mafiaCount,
-          discussionTimeSeconds: gameSettings.discussionTimeSeconds,
+          mafiaCount,
+          discussionTimeSeconds,
         }),
       });
       if (!response.ok) {
         const payload = await response.json().catch(() => ({}));
-        throw new Error(payload.message || 'Failed to start game');
+        throw new Error(payload.error || payload.message || 'Failed to start game');
       }
       navigate(`/game/${roomCode}`);
     } catch (err) {

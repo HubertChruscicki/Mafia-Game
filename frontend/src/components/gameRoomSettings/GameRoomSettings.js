@@ -114,7 +114,10 @@ function GameRoomSettings({
       <button
         type="button"
         className="game-settings__start-btn"
-        onClick={() => onStartGame && onStartGame()}
+        onClick={() =>
+          onStartGame &&
+          onStartGame({ mafiaCount, discussionTimeSeconds: discussionTime })
+        }
         disabled={tooFewPlayers}
       >
         Start Game

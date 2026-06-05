@@ -79,7 +79,7 @@ function useGameRooms() {
       });
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.message || 'Failed to leave room');
+        throw new Error(data.error || data.message || 'Failed to leave room');
       }
     } catch (err) {
       console.error('Error leaving room:', err);
