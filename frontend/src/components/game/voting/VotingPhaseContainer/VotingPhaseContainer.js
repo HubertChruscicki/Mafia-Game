@@ -45,7 +45,7 @@ function VotingPhaseContainer({
         <EliminationDialog
           eliminated={eliminationResult}
           isTie={eliminationResult?.isTie || false}
-          phase={gamePhase}
+          phase={eliminationResult.phase || gamePhase}
           onClose={onClearElimination}
         />
       )}

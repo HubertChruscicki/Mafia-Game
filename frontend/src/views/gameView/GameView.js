@@ -37,6 +37,7 @@ function mapVotingSessionDto(data, prev = null) {
     dayNumber: data.dayNumber,
     currentResults: normalizedResults,
     remainingTimeSeconds: data.remainingSeconds ?? data.remainingTimeSeconds,
+    totalDurationSeconds: data.totalDurationSeconds,
     totalVoters: data.totalVoters,
     votesReceived: data.votesReceived,
     hasVoted: prev?.hasVoted === true,
@@ -94,6 +95,9 @@ function GameView() {
       setVotingSession((prev) => mapVotingSessionDto(data, prev));
       if (data.remainingSeconds != null) {
         setTimerSeconds(data.remainingSeconds);
+      }
+      if (data.totalDurationSeconds != null) {
+        setDiscussionTimeSeconds(data.totalDurationSeconds);
       }
       return data;
     } catch (err) {
@@ -197,7 +201,16 @@ function GameView() {
 
         client.subscribe(`/topic/game/${roomCode}/phase/result`, (msg) => {
           const data = JSON.parse(msg.body);
-          setEliminationResult(normalizeElimination(data));
+          setEliminationResult((prev) => {
+            const normalized = normalizeElimination(data);
+            const prevWasVote = prev?.phase === 'NIGHT_VOTE' || prev?.phase === 'DAY_VOTE';
+            const nextIsResult =
+              normalized.phase === 'NIGHT_RESULT' || normalized.phase === 'DAY_RESULT';
+            if (prevWasVote && nextIsResult) {
+              return { ...normalized, phase: prev.phase };
+            }
+            return normalized;
+          });
           if (data.eliminatedUserId) {
             setPlayers((prev) =>
               prev.map((p) =>
@@ -214,6 +227,9 @@ function GameView() {
           setVotingSession((prev) => mapVotingSessionDto(data, prev));
           if (data.remainingSeconds != null) {
             setTimerSeconds(data.remainingSeconds);
+          }
+          if (data.totalDurationSeconds != null) {
+            setDiscussionTimeSeconds(data.totalDurationSeconds);
           }
         });
 
@@ -397,7 +413,9 @@ function GameView() {
         gamePhase={gamePhase}
         votingSession={votingSession}
         timerSeconds={isVotingPhase(gamePhase) ? timerSeconds : null}
-        discussionTimeSeconds={discussionTimeSeconds}
+        discussionTimeSeconds={
+          votingSession?.totalDurationSeconds || discussionTimeSeconds
+        }
         onVoteCast={handleVoteCast}
         eliminationResult={eliminationResult}
         onClearElimination={handleClearElimination}

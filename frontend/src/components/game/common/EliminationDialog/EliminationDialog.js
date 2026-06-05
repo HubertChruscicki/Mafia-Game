@@ -11,7 +11,7 @@ function EliminationDialog({ eliminated, isTie, phase, onClose }) {
 
   if (!eliminated) return null;
 
-  const isNight = phase && phase.includes('NIGHT');
+  const isNight = phase === 'NIGHT_VOTE' || phase === 'NIGHT_RESULT';
   const hasElimination =
     eliminated.eliminatedUsername &&
     eliminated.resultType !== 'NO_ELIMINATION' &&
