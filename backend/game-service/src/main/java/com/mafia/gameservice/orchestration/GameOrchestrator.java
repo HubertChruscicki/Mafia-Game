@@ -86,8 +86,8 @@ public class GameOrchestrator {
         phaseStateMachine.transition(game, GamePhaseEvent.VOTING_COMPLETED);
         gameRepository.save(game);
 
-        // 2. Broadcast wynik głosowania
-        broadcastVotingResult(game, result);
+        // 2. Broadcast wynik głosowania (używamy fazy sesji — faza gry może już być wynikiem)
+        broadcastVotingResult(game, session, result);
 
         // 3. Sprawdź warunki wygranej
         WinConditionResult winCheck = checkWinConditions(game);
@@ -231,7 +231,7 @@ public class GameOrchestrator {
 
     // ==================== WEBSOCKET BROADCASTS ====================
 
-    private void broadcastVotingResult(Game game, VotingResult result) {
+    private void broadcastVotingResult(Game game, VotingSession session, VotingResult result) {
         try {
             String roomCode = game.getRoom().getRoomCode();
 
@@ -256,7 +256,7 @@ public class GameOrchestrator {
                         game,
                         result.getEliminatedUser(),
                         role,
-                        game.getCurrentPhase().name(),
+                        session.getPhase().name(),
                         votesReceived
                 );
             }
@@ -264,7 +264,7 @@ public class GameOrchestrator {
             Map<String, Object> payload = new HashMap<>();
             payload.put("type", "voting_result");
             payload.put("gameId", game.getId());
-            payload.put("phase", game.getCurrentPhase().name());
+            payload.put("phase", session.getPhase().name());
             payload.put("dayNumber", game.getCurrentDayNumber());
             payload.put("eliminated", result.getEliminatedUser() != null
                     ? result.getEliminatedUser().getUsername() : null);

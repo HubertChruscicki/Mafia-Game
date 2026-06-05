@@ -199,6 +199,8 @@ public class VotingSessionService {
     public VotingSessionDto toDto(VotingSession session) {
         long remaining = ChronoUnit.SECONDS.between(LocalDateTime.now(), session.getEndsAt());
         remaining = Math.max(0, remaining);
+        long totalDuration = ChronoUnit.SECONDS.between(session.getStartedAt(), session.getEndsAt());
+        totalDuration = Math.max(1, totalDuration);
 
         List<Object[]> raw = session.getPhase() == GamePhase.NIGHT_VOTE
                 ? gameVoteRepository.countAllVotesByTarget(session)
@@ -213,6 +215,7 @@ public class VotingSessionService {
                 session.getPhase().name(),
                 session.getDayNumber(),
                 remaining,
+                totalDuration,
                 session.getTotalEligibleVoters(),
                 session.getVotesReceived(),
                 voteMap

@@ -15,6 +15,7 @@ public class VotingSessionDto {
     private String phase;
     private int dayNumber;
     private long remainingSeconds;
+    private long totalDurationSeconds;
     private int totalVoters;
     private int votesReceived;
     private Map<UUID, Integer> voteMap; // targetUserId → vote count
