@@ -57,12 +57,10 @@ public class VotingTimerScheduler {
 
     /**
      * Wysyła tick timera co sekundę dla aktywnych sesji.
-     * Zapewnia synchronizację czasu między wszystkimi klientami.
-     *
-     * UWAGA: Ta metoda NIE jest transakcyjna, aby nie blokować innych operacji.
-     * Pobiera świeże dane z bazy przy każdym wywołaniu.
+     * readOnly transaction keeps lazy associations (game.room) initialized.
      */
     @Scheduled(fixedRate = 1000)
+    @Transactional(readOnly = true)
     public void broadcastTimerTicks() {
         try {
             List<VotingSession> activeSessions = votingSessionRepository.findByStatus(VotingStatus.ACTIVE);

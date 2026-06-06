@@ -1,0 +1,139 @@
+services:
+  # ─── Infrastructure ───────────────────────────────────────────
+  mafia-db:
+    image: postgres:18
+    container_name: mafia-db
+    environment:
+      - POSTGRES_DB=mafia
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mafia"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mafia-rabbitmq:
+    image: rabbitmq:4.1-management
+    container_name: mafia-rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Backend services ──────────────────────────────────────────
+  auth-service:
+    build:
+      context: ./backend/auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    environment:
+      - SERVER_PORT=8081
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://mafia-db:5432/mafia
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_RABBITMQ_HOST=mafia-rabbitmq
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
+    volumes:
+      - ./backend/auth-service/logs:/app/logs
+    restart: unless-stopped
+    depends_on:
+      mafia-db:
+        condition: service_healthy
+      mafia-rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8081/actuator/health | grep -q '\"status\":\"UP\"' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  game-service:
+    build:
+      context: ./backend/game-service
+      dockerfile: Dockerfile
+    container_name: game-service
+    environment:
+      - SERVER_PORT=8082
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://mafia-db:5432/mafia
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_RABBITMQ_HOST=mafia-rabbitmq
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - AUTH_SERVICE_URL=http://auth-service:8081
+      - SPRING_TASK_SCHEDULING_ENABLED=true
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
+    volumes:
+      - ./backend/game-service/logs:/app/logs
+    restart: unless-stopped
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      mafia-db:
+        condition: service_healthy
+      mafia-rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8082/actuator/health | grep -q '\"status\":\"UP\"' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  gateway-service:
+    build:
+      context: ./backend/gateway-service
+      dockerfile: Dockerfile
+    container_name: gateway-service
+    environment:
+      - SERVER_PORT=8080
+      - "CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}"
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
+    restart: unless-stopped
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      game-service:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+  # ─── Frontend ──────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mafia-frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      game-service:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  rabbitmq_data:

@@ -1,22 +1,20 @@
 package com.mafia.gameservice.dto;
 
-import com.mafia.gameservice.enums.GameRole;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
-/**
- * DTO zawierające informacje o roli gracza w grze
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerRoleDto {
+
     private UUID userId;
     private String username;
-    private GameRole role;
+    private String role;
+
+    @JsonProperty("isAlive")
     private boolean isAlive;
-    private String gameNick;
 }

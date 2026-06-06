@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { apiFetch } from '../../services/authApi';
 import './JoinGameRoomView.css';
 
 function JoinGameRoomView() {
@@ -15,27 +16,16 @@ function JoinGameRoomView() {
       setLoading(true);
       setError('');
       try {
-        const apiBase = process.env.REACT_APP_API_BASE_URL;
-        if (!apiBase) {
-          setRoom({
-            name: `Room ${roomCode}`,
-            hostUsername: 'Host',
-            currentPlayers: 3,
-            maxPlayers: 8,
-            status: 'OPEN',
-          });
-          setLoading(false);
-          return;
+        const response = await apiFetch(`/api/game_rooms/${roomCode}`);
+        if (response.status === 404) throw new Error('Room not found');
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload.message || 'Failed to load room');
         }
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${apiBase}/api/game_rooms/${roomCode}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!response.ok) throw new Error('Failed to load room');
         const data = await response.json();
         setRoom(data);
       } catch (err) {
-        setError(err.message || 'Failed to load room');
+        setError(err.message || 'Nie udało się załadować pokoju');
       } finally {
         setLoading(false);
       }
@@ -48,26 +38,17 @@ function JoinGameRoomView() {
     setJoining(true);
     setError('');
     try {
-      const apiBase = process.env.REACT_APP_API_BASE_URL;
-      if (!apiBase) {
-        navigate(`/game-room/${roomCode}`);
-        return;
-      }
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${apiBase}/api/game_rooms/join/${roomCode}`, {
+      const response = await apiFetch(`/api/game_rooms/join/${roomCode}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { 'Content-Type': 'application/json' },
       });
       if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text || 'Failed to join room');
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.message || 'Nie udało się dołączyć do pokoju');
       }
       navigate(`/game-room/${roomCode}`);
     } catch (err) {
-      setError(err.message || 'Failed to join room');
+      setError(err.message || 'Nie udało się dołączyć do pokoju');
     } finally {
       setJoining(false);
     }

@@ -10,12 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PlayerInRoomService {
-  private final PlayerInRoomRepository playerInRoomRepository;
 
-  public void addPlayerToGameRoom(User user, GameRoom room) {
-    var playerInRoom = new PlayerInRoom();
-    playerInRoom.setUser(user);
-    playerInRoom.setGameRoom(room);
-    playerInRoomRepository.save(playerInRoom);
-  }
+    private final PlayerInRoomRepository playerInRoomRepository;
+
+    public void addPlayerToGameRoom(User user, GameRoom room) {
+        if (playerInRoomRepository.existsByGameRoomAndUser(room, user)) {
+            return;
+        }
+        PlayerInRoom playerInRoom = new PlayerInRoom();
+        playerInRoom.setUser(user);
+        playerInRoom.setGameRoom(room);
+        playerInRoomRepository.save(playerInRoom);
+    }
 }

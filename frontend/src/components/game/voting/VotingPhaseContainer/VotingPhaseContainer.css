@@ -1,0 +1,21 @@
+.voting-phase-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.voting-phase-container__timer {
+  display: flex;
+  justify-content: center;
+}
+
+.voting-phase-container__waiting {
+  text-align: center;
+  color: #888;
+  padding: 2rem 0;
+  font-size: 1.1rem;
+}

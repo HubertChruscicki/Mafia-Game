@@ -9,9 +9,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameRoomRepository extends JpaRepository<GameRoom, UUID> {
-  boolean existsByRoomCode(String roomCode);
 
-  Optional<GameRoom> findByRoomCode(String roomCode);
+    Optional<GameRoom> findByRoomCode(String roomCode);
 
-  List<GameRoom> findByNameContainingIgnoreCase(String name);
+    boolean existsByRoomCode(String roomCode);
+
+    List<GameRoom> findByNameContainingIgnoreCase(String name);
 }

@@ -1,7 +1,7 @@
 import './FormInput.css';
 
 function FormInput({
-  label,
+  label: Icon,
   type = 'text',
   name,
   placeholder,
@@ -9,12 +9,14 @@ function FormInput({
   onChange,
   disabled = false,
   required = false,
+  autoComplete = 'off',
 }) {
   return (
-    <label className="form-input">
-      <span className="form-input__label">{label}</span>
+    <div className="form-input">
+      {Icon && <label className="form-input__icon" htmlFor={name}>{Icon}</label>}
       <input
         className="form-input__control"
+        id={name}
         type={type}
         name={name}
         placeholder={placeholder}
@@ -22,9 +24,12 @@ function FormInput({
         onChange={onChange}
         disabled={disabled}
         required={required}
-        autoComplete="off"
+        autoComplete={autoComplete}
+        autoCorrect="off"
+        autoCapitalize="none"
+        spellCheck="false"
       />
-    </label>
+    </div>
   );
 }
 

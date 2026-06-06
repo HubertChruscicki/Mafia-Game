@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { MdEmail, MdLock, MdPerson } from 'react-icons/md';
 import { registerUser } from '../../services/authApi';
 import {
   getEmailError,
@@ -77,39 +78,39 @@ function RegisterForm() {
         <FormMessage type="error" message={error} />
         <form onSubmit={handleSubmit}>
           <FormInput
-            label="Nazwa uzytkownika"
+            label={<MdPerson size={22} />}
             name="username"
-            placeholder="Podaj nick"
+            placeholder="Nazwa użytkownika"
             value={formData.username}
             onChange={handleChange}
             disabled={loading}
             required
           />
           <FormInput
-            label="Email"
+            label={<MdEmail size={22} />}
             type="email"
             name="email"
-            placeholder="twoj@email.com"
+            placeholder="Twój email"
             value={formData.email}
             onChange={handleChange}
             disabled={loading}
             required
           />
           <FormInput
-            label="Haslo"
+            label={<MdLock size={22} />}
             type="password"
             name="password"
-            placeholder="Wpisz haslo"
+            placeholder="Hasło"
             value={formData.password}
             onChange={handleChange}
             disabled={loading}
             required
           />
           <FormInput
-            label="Powtorz haslo"
+            label={<MdLock size={22} />}
             type="password"
             name="confirmPassword"
-            placeholder="Wpisz haslo ponownie"
+            placeholder="Powtórz hasło"
             value={formData.confirmPassword}
             onChange={handleChange}
             disabled={loading}

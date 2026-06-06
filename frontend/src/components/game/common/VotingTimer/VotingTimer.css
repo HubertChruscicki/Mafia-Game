@@ -1,0 +1,52 @@
+.voting-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0;
+}
+
+.voting-timer__bar-track {
+  width: 100%;
+  max-width: 400px;
+  height: 8px;
+  background: #2a2a2a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.voting-timer__bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s linear, background 0.5s;
+}
+
+.voting-timer--green .voting-timer__bar-fill {
+  background: #4caf50;
+}
+
+.voting-timer--yellow .voting-timer__bar-fill {
+  background: #ff9800;
+}
+
+.voting-timer--red .voting-timer__bar-fill {
+  background: #f44336;
+}
+
+.voting-timer__text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.voting-timer--green .voting-timer__text { color: #4caf50; }
+.voting-timer--yellow .voting-timer__text { color: #ff9800; }
+.voting-timer--red .voting-timer__text {
+  color: #f44336;
+  animation: timer-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

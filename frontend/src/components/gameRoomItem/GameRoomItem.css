@@ -1,0 +1,157 @@
+.game-room-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.game-room-item:hover {
+  border-color: #d0d0d0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+.game-room-item--clickable {
+  cursor: pointer;
+}
+
+.game-room-item--clickable:focus-visible {
+  outline: 2px solid #1a6fcc;
+  outline-offset: 2px;
+}
+
+.game-room-item__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.game-room-item__title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.game-room-item__name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.game-room-item__status {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+
+.game-room-item__status--open {
+  background-color: #d4edda;
+  color: #1a6630;
+}
+
+.game-room-item__status--in-progress {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.game-room-item__status--closed {
+  background-color: #e9ecef;
+  color: #6c757d;
+}
+
+.game-room-item__meta {
+  font-size: 0.88rem;
+  color: #555555;
+  margin: 2px 0;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.game-room-item__code {
+  font-size: 0.82rem;
+  color: #9c9797;
+  margin: 4px 0 0 0;
+  font-family: 'DM Sans', sans-serif;
+  font-style: italic;
+}
+
+.game-room-item__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.game-room-item__btn {
+  padding: 8px 16px;
+  font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.game-room-item__btn--join {
+  background-color: #279302;
+  color: #ffffff;
+}
+
+.game-room-item__btn--join:hover {
+  background-color: #006305;
+}
+
+.game-room-item__btn--enter {
+  background-color: #1a6fcc;
+  color: #ffffff;
+}
+
+.game-room-item__btn--enter:hover {
+  background-color: #1558a8;
+}
+
+.game-room-item__btn--leave {
+  background-color: #f0f0f0;
+  color: #333333;
+}
+
+.game-room-item__btn--leave:hover {
+  background-color: #dcdcdc;
+}
+
+.game-room-item__btn--end {
+  background-color: #cc0404;
+  color: #ffffff;
+}
+
+.game-room-item__btn--end:hover {
+  background-color: #a00303;
+}
+
+@media (max-width: 600px) {
+  .game-room-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .game-room-item__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

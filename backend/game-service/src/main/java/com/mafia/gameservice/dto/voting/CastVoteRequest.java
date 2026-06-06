@@ -6,16 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Request do oddania głosu
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CastVoteRequest {
-  @NotNull(message = "Voting session ID is required")
-  private UUID votingSessionId;
 
-  @NotNull(message = "Target user ID is required")
-  private UUID targetUserId;
+    @NotNull(message = "Voting session ID is required")
+    private UUID votingSessionId;
+
+    @NotNull(message = "Target user ID is required")
+    private UUID targetUserId;
 }

@@ -20,6 +20,7 @@ import com.mafia.authservice.models.User;
 import com.mafia.authservice.repository.UserRepository;
 import com.mafia.authservice.security.JwtTokenProvider;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
@@ -174,6 +175,99 @@ class UserServiceTest {
 
         assertThatThrownBy(() -> userService.updateUsername("taken"))
                 .isInstanceOf(UsernameAlreadyExistsException.class);
+    }
+
+    @Test
+    void updateUsernameSucceedsWhenAvailable() {
+        authenticate(existingUser);
+        when(userRepository.findById(existingUser.getId())).thenReturn(Optional.of(existingUser));
+        when(userRepository.existsByUsername("new-name")).thenReturn(false);
+        when(userRepository.save(existingUser)).thenReturn(existingUser);
+
+        UserInfoResponse response = userService.updateUsername("new-name");
+
+        assertThat(response.getUsername()).isEqualTo("new-name");
+        assertThat(existingUser.getUsername()).isEqualTo("new-name");
+    }
+
+    @Test
+    void updateEmailRejectsDuplicate() {
+        authenticate(existingUser);
+        when(userRepository.findById(existingUser.getId())).thenReturn(Optional.of(existingUser));
+        when(userRepository.existsByEmail("taken@example.com")).thenReturn(true);
+
+        assertThatThrownBy(() -> userService.updateEmail("taken@example.com"))
+                .isInstanceOf(EmailAlreadyExistsException.class);
+    }
+
+    @Test
+    void updateEmailSucceeds() {
+        authenticate(existingUser);
+        when(userRepository.findById(existingUser.getId())).thenReturn(Optional.of(existingUser));
+        when(userRepository.existsByEmail("new@example.com")).thenReturn(false);
+        when(userRepository.save(existingUser)).thenReturn(existingUser);
+
+        UserInfoResponse response = userService.updateEmail("new@example.com");
+
+        assertThat(response.getEmail()).isEqualTo("new@example.com");
+    }
+
+    @Test
+    void logoutUserRevokesRefreshToken() {
+        userService.logoutUser("refresh-token");
+
+        verify(refreshTokenService).revokeRefreshToken("refresh-token");
+    }
+
+    @Test
+    void logoutAllDevicesRevokesAllTokens() {
+        authenticate(existingUser);
+        when(userRepository.findById(existingUser.getId())).thenReturn(Optional.of(existingUser));
+
+        userService.logoutAllDevices();
+
+        verify(refreshTokenService).revokeAllUserTokens(existingUser);
+    }
+
+    @Test
+    void getCurrentUserInfoReturnsAuthenticatedUser() {
+        authenticate(existingUser);
+        when(userRepository.findById(existingUser.getId())).thenReturn(Optional.of(existingUser));
+
+        UserInfoResponse info = userService.getCurrentUserInfo();
+
+        assertThat(info.getUsername()).isEqualTo("alice");
+        assertThat(info.getEmail()).isEqualTo("alice@example.com");
+    }
+
+    @Test
+    void searchUsersWithBlankQueryReturnsAll() {
+        when(userRepository.findAll()).thenReturn(List.of(existingUser));
+
+        List<com.mafia.authservice.dto.UserResponse> users = userService.searchUsers("  ");
+
+        assertThat(users).hasSize(1);
+        assertThat(users.get(0).getUsername()).isEqualTo("alice");
+    }
+
+    @Test
+    void searchUsersFiltersByQuery() {
+        when(userRepository.findByUsernameContainingIgnoreCase("ali"))
+                .thenReturn(List.of(existingUser));
+
+        List<com.mafia.authservice.dto.UserResponse> users = userService.searchUsers("ali");
+
+        assertThat(users).extracting(com.mafia.authservice.dto.UserResponse::getUsername)
+                .containsExactly("alice");
+    }
+
+    @Test
+    void getUserByIdThrowsWhenMissing() {
+        UUID id = UUID.randomUUID();
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.getUserById(id))
+                .isInstanceOf(com.mafia.authservice.exception.UserNotFoundException.class);
     }
 
     private void authenticate(User user) {
